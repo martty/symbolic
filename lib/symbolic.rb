@@ -53,7 +53,7 @@ end
 #in order they should be loaded
 ['symbolic/expression.rb','symbolic/coerced.rb','symbolic/constants.rb','symbolic/factors.rb',
 'symbolic/printer.rb','symbolic/sum.rb','symbolic/variable.rb','symbolic/constant.rb',
-'symbolic/function.rb','symbolic/misc.rb','symbolic/statistics.rb',
+'symbolic/function.rb','symbolic/misc.rb','symbolic/statistics.rb','symbolic/parser.rb',
 'symbolic/summands.rb','symbolic/extensions/kernel.rb','symbolic/extensions/matrix.rb','symbolic/extensions/module.rb',
 'symbolic/extensions/numeric.rb','symbolic/extensions/rational.rb','symbolic/math.rb'].each do |file|
   require File.dirname(__FILE__) + '/' + file

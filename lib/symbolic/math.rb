@@ -26,6 +26,12 @@ module Symbolic::Math
   Acosh = Symbolic::Function.new('acosh',1 / (1 - Arg) ** Rational(1,2))
   Asinh = Symbolic::Function.new('asinh',1 / (1 + Arg) ** Rational(1,2))
   Atanh = Symbolic::Function.new('atanh',1/ (1 - Arg**2))
+  
+  @@functions = Hash.new
+  
+  def self.functions
+  	@@functions
+  end
 
   #make functions of the form fctn(arg) and add operation to each function
   #for ruby 1.9, we have to convert them to strings (they were strings in 1.8)
@@ -35,6 +41,12 @@ module Symbolic::Math
       def #{fctn.downcase}(argument)
         #{fctn}[argument]
       end
+      
+      def #{fctn}
+      	#{fctn}
+      end
+      
+      @@functions['#{fctn.downcase}'] =  #{fctn}
     CODE
   end
 end
