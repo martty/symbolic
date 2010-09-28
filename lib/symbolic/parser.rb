@@ -62,10 +62,12 @@ module Symbolic
 		  "+" => Oper.new(10, :plus,  :infix),
 		  "++" => {:infix_or_postfix => Oper.new(30, :postincr,  :postfix), 
 		           :prefix => Oper.new(30,:preincr, :prefix)},
-		  "-" => Oper.new(10, :minus, :infix),
+		  "-" => {:infix_or_postfix => Oper.new(10, :minus, :infix),
+		  				:prefix => Oper.new(20, :uminus, :prefix)},
 		  "*" => Oper.new(20, :mul,   :infix),
 		  "/" => Oper.new(20, :div,   :infix),
 		  "^" => Oper.new(30, :pow,   :infix),
+		  "**" => Oper.new(30, :pow,  :infix),
 		  "!" => Oper.new(30, :not,   :prefix),
 		  "," => Oper.new(2,  :comma,   :infix),
 		  "(" => Oper.new(99, nil,   :lp),
@@ -96,18 +98,25 @@ module Symbolic
 		end
 		
 		def self.parse_postfix(post)
+			# if only one token
+			#if post.size == 1
+			#	return determine_type(post.pop)
+			#end
 			# first 2 tokens must be operands
 			stack = Array.new
-			stack.push determine_type(post.reverse!.pop)
-			stack.push determine_type(post.pop)
-			post.reverse!
+			p post
+			#stack.push determine_type(post.reverse!.pop)
+			#stack.push determine_type(post.pop)
+			#post.reverse!
 			post.each do |token|
 				if token.is_a?(Symbol)
 					if token == :plus
 						stack.push(stack.pop + stack.pop)
-					elsif token == :minus
+					elsif token == :minus # binary minus
 						e1 = stack.pop
 						stack.push(stack.pop() - e1)
+					elsif token == :uminus #unary minus
+						stack.push(-stack.pop())
 					elsif token == :mul
 						stack.push(stack.pop * stack.pop)
 					elsif token == :div
@@ -131,7 +140,11 @@ module Symbolic
 	
 		def self.determine_type(token) # returns a Float or a var
 			if numeric?(token)
-				return Float(token)
+				if (Float(token).to_i.to_f == Float(token)) # an int!
+					return Integer(token)
+				else
+					return Float(token)
+				end
 			else
 				if Symbolic::Math.functions.has_key?(token.downcase)
 					a = Symbolic::Math.functions[token.downcase]
