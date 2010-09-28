@@ -195,7 +195,7 @@ describe "Symbolic" do
     Symbolic::Parser.parse('x**y').to_s => 'x**y',
     Symbolic::Parser.parse('x**(y-4)').to_s => 'x**(y-4)',
     Symbolic::Parser.parse('(x+1)**(y*2)').to_s => '(x+1)**(2*y)',
-    Symbolic::Parser.parse('-(x**y -2)+5').to_s => '-x**y+7'
+    Symbolic::Parser.parse('-(x**y -2)+5').to_s => '-x**y+7'.to_s
   end
 end
 
