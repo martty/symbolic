@@ -34,6 +34,9 @@ module Symbolic
 		                            # "opstate" is used to handle things like pre-increment and post-increment that
 		                            # share the same token.
 		  src.each do |token|
+		  	p token
+		  	p @ostack
+		  	p @out.result
 		    if op = @opers[token]
 		      op = op[opstate] if op.is_a?(Hash)
 		      if op.type == :rp then reduce
@@ -41,7 +44,7 @@ module Symbolic
 		        opstate = :prefix
 		        reduce op # For handling the postfix operators
 		        @ostack << (op.type == :lp && possible_func ? Oper.new(1, :call, :infix) : op)
-		        o = @ostack[-1]
+		        #o = @ostack[-1]
 		      end
 		    else 
 		      @out.value(token)
@@ -63,7 +66,7 @@ module Symbolic
 		  "++" => {:infix_or_postfix => Oper.new(30, :postincr,  :postfix), 
 		           :prefix => Oper.new(30,:preincr, :prefix)},
 		  "-" => {:infix_or_postfix => Oper.new(10, :minus, :infix),
-		  				:prefix => Oper.new(20, :uminus, :prefix)},
+		  				:prefix => Oper.new(50, :uminus, :prefix)},
 		  "*" => Oper.new(20, :mul,   :infix),
 		  "/" => Oper.new(20, :div,   :infix),
 		  "^" => Oper.new(30, :pow,   :infix),
@@ -78,7 +81,10 @@ module Symbolic
 	end
 
 	class SimpleLexer
-		def initialize s; @s = s; end
+		def initialize s 
+			@s = s
+			@s.gsub!('**', '^')
+		end
 
 		def each
 		  @s.scan(/[ \r\n]*([0-9]+|[A-Za-z]+|\+\+|[\(\)+\-*\/\!,\^])[ \r\n]*/).each do |token|
@@ -112,7 +118,7 @@ module Symbolic
 				if token.is_a?(Symbol)
 					if token == :plus
 						stack.push(stack.pop + stack.pop)
-					elsif token == :minus # binary minus
+					elsif token == :minus # binay minus
 						e1 = stack.pop
 						stack.push(stack.pop() - e1)
 					elsif token == :uminus #unary minus

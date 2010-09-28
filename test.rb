@@ -12,7 +12,7 @@ p f
 #p syma = Symbolic.shunt(res)
 #p sym.to_s
 
-p sym = Symbolic::Parser.parse('-x')
+p sym = Symbolic::Parser.parse('x^y-2')
 
 #g = Symbolic::Math.cos(x)*100*Symbolic::Math.log(6)
 #p g.to_s
