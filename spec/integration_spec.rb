@@ -34,6 +34,15 @@ describe "Symbolic" do
       end
     end
   end
+  
+  def self.should_parse(conditions)
+    conditions.each do |symbolic_expression, result|
+      it symbolic_expression do
+       expr = symbolic_expression.lstrip
+        Symbolic::Parser.parse(expr).to_s.should == result
+      end
+    end
+  end
 
   describe "evaluation (x=1, y=2):" do
     should_evaluate_to \
@@ -178,24 +187,24 @@ describe "Symbolic" do
   end
   
   describe "parsing:" do
-  	should_equal \
-    Symbolic::Parser.parse('x').to_s => 'x',
-    Symbolic::Parser.parse('-x').to_s => '-x',
-    Symbolic::Parser.parse('x+1').to_s => 'x+1',
-    Symbolic::Parser.parse('x-4').to_s => 'x-4',
-    Symbolic::Parser.parse('-x-4').to_s => '-x-4',
-    Symbolic::Parser.parse('-(x+y)').to_s => '-x-y',
-    Symbolic::Parser.parse('-(x-y)').to_s => '-x+y',
-    Symbolic::Parser.parse('x*y').to_s => 'x*y',
-    Symbolic::Parser.parse('(-x)*y').to_s => '-x*y',
-    Symbolic::Parser.parse('(y+3)*(x+2)*4').to_s => '4*(y+3)*(x+2)',
-    Symbolic::Parser.parse('4/x').to_s => '4/x',
-    Symbolic::Parser.parse('2*x**(-1)*y**(-1)').to_s => '2/(x*y)',
-    Symbolic::Parser.parse('(-(2+x))/(-(-y))').to_s => '(-x-2)/y',
-    Symbolic::Parser.parse('x**y').to_s => 'x**y',
-    Symbolic::Parser.parse('x**(y-4)').to_s => 'x**(y-4)',
-    Symbolic::Parser.parse('(x+1)**(y*2)').to_s => '(x+1)**(2*y)',
-    Symbolic::Parser.parse('-(x**y -2)+5').to_s => '-x**y+7'.to_s
+  	should_parse \
+   'x' => 'x',
+   '-x' => '-x',
+   'x+1' => 'x+1',
+   'x-4' => 'x-4',
+   '-x-4' => '-x-4',
+   '-(x+y)' => '-x-y',
+   '-(x-y)' => '-x+y',
+   'x*y' => 'x*y',
+   '(-x)*y' => '-x*y',
+   '(y+3)*(x+2)*4' => '4*(y+3)*(x+2)',
+   '4/x' => '4/x',
+   '2*x**(-1)*y**(-1)' => '2/(x*y)',
+   '(-(2+x))/(-(-y))' => '(-x-2)/y',
+   'x**y' => 'x**y',
+   'x**(y-4)' => 'x**(y-4)',
+   '(x+1)**(y*2)' => '(x+1)**(2*y)',
+   '-(x**y -2)+5' => '-x**y+7'
   end
 end
 

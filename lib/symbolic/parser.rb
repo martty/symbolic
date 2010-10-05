@@ -21,8 +21,11 @@ module Symbolic
 		  # We check for :postfix to handle cases where a postfix operator has been given a lower precedence than an
 		  # infix operator, yet it needs to bind tighter to tokens preceeding it than a following infix operator regardless,
 		  # because the alternative gives a malfored expression.
-		  while  !@ostack.empty? && (@ostack[-1].pri > pri || @ostack[-1].type == :postfix)
+		  while  !@ostack.empty? && (@ostack[-1].pri >= pri || @ostack[-1].type == :postfix)
 		    o = @ostack.pop
+		    if op and o.type == :lp # not rp, do not eat the lp
+		    	@ostack.push(o)
+		    end
 		    return if o.type == :lp
 		    @out.oper(o)
 		  end
@@ -34,9 +37,9 @@ module Symbolic
 		                            # "opstate" is used to handle things like pre-increment and post-increment that
 		                            # share the same token.
 		  src.each do |token|
-		  	p token
-		  	p @ostack
-		  	p @out.result
+		  	#p token
+		  	#p @ostack
+		  	#p @out.result
 		    if op = @opers[token]
 		      op = op[opstate] if op.is_a?(Hash)
 		      if op.type == :rp then reduce
@@ -44,7 +47,6 @@ module Symbolic
 		        opstate = :prefix
 		        reduce op # For handling the postfix operators
 		        @ostack << (op.type == :lp && possible_func ? Oper.new(1, :call, :infix) : op)
-		        #o = @ostack[-1]
 		      end
 		    else 
 		      @out.value(token)
@@ -110,21 +112,23 @@ module Symbolic
 			#end
 			# first 2 tokens must be operands
 			stack = Array.new
-			p post
+			#p post
 			#stack.push determine_type(post.reverse!.pop)
 			#stack.push determine_type(post.pop)
 			#post.reverse!
 			post.each do |token|
 				if token.is_a?(Symbol)
 					if token == :plus
-						stack.push(stack.pop + stack.pop)
+						e1 = stack.pop
+						stack.push(stack.pop + e1)
 					elsif token == :minus # binay minus
 						e1 = stack.pop
 						stack.push(stack.pop() - e1)
 					elsif token == :uminus #unary minus
 						stack.push(-stack.pop())
 					elsif token == :mul
-						stack.push(stack.pop * stack.pop)
+						e1 = stack.pop
+						stack.push(stack.pop * e1)
 					elsif token == :div
 						e1 = stack.pop
 						stack.push(stack.pop / e1)
@@ -152,7 +156,7 @@ module Symbolic
 					return Float(token)
 				end
 			else
-				if Symbolic::Math.functions.has_key?(token.downcase)
+				if Symbolic::Math.functions.has_key?(token.downcase) #todo arbitrary functions (unknown func)
 					a = Symbolic::Math.functions[token.downcase]
 				else
 					a = var :name => token

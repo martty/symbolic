@@ -12,7 +12,14 @@ p f
 #p syma = Symbolic.shunt(res)
 #p sym.to_s
 
-p sym = Symbolic::Parser.parse('x^y-2')
+y = var :name => 'y'
+
+p sym = Symbolic::Parser.parse('(y+3)*(x+2)*4')
+p sym.to_s
+p g = 4*(y+3)*(x+2)
+p g.to_s
+
+p sym.to_s
 
 #g = Symbolic::Math.cos(x)*100*Symbolic::Math.log(6)
 #p g.to_s
