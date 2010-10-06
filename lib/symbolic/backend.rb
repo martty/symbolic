@@ -37,6 +37,7 @@ class Symbolic::Backends
 		end
 		
 		def method_missing(operation, *args) # any non-symbolic method will be sent to the backend
+			args.reverse!.push(self).reverse!
 			Symbolic::Backends.get_current_backend.send(operation, *args)
 		end
 		

@@ -1,76 +1,45 @@
-Symbolic math for ruby with maxima to do the heavy lifting.
-
-== Installation
-
-not yet...
+Symbolic math for ruby with backend support to do the heavy-lifting.
 
 == Introduction
 
-This gem can help you
-- if you want to get a simplified form of a big equation
-- if you want to speed up similar calculations
-- if you need an abstraction layer for math
+== Basic tutorial
 
-== Tutorial
+Symbolic tutorial at http://brainopia.github.com/symbolic/
 
-First, you need to create a symbolic variable.
+== Backend use
 
-  x = var
+# you can obtain the available backends by calling
+Symbolic::Backends.get_backends
 
-  # you can set a name of variable (useful if you print equations)
-  angle = var :name => 'θ'
+# choose a backend
+Symbolic::Backends.use_backend('Maxima')
+# you can switch backends any time
 
-  # or starting value
-  pi = var :value => 3.14
+# now you can perform advanced operations provided by the chosen backend
 
-  # or bind its value to a proc
-  y = var { x ** 2 }
+# sample function
+x = var :name => 'x'
+f = 2*x + 5
 
-  # you can set a value for already created variable
-  x.value = 3
+F = f.indefinite_integral('x') #indefinite_integral is provided by the maxima backend
+p F
+#=> Symbolic(x**2+5*x)
 
-Now, you can do any math operations with it.
+== Creating your own backend
 
-  f = 2*x + 1
-  puts f # => 2*x+1
+- create a file yourbackend.rb in backends/
+- automatic loading soon...
+- create a class that inherits Symbolic::Backends::Backend and is in the namespace Symbolic::Backends
+- override on_load and on_unload if you need state support
+- add any function which can be called on the expressions, the first argument is the expression itself
 
-To get value of symbolic expression you just call value:
+== Maxima backend
 
-  f.value # => 7
+Supported functions:
+-indefinite_integral, definite_integral
+-laplace, inverse_laplace
 
-If symbolic expression contains variables without value then it returns nil.
-
-  z = var
-  (z+1).value # => nil
-
-All symbolic expression are automatically simplified when created:
-
-  0 * x           # => 0
-  2 + x + 1       # => x + 3
-  -(x-y) + 2*x    # => x + y
-  (x**2)**3 / x   # => x**5
-  # etc. (more examples can be found in symbolic_spec.rb)
-
-If you need to use a function from Math module with symbolic variable, use Symbolic::Math module.
-
-  cos = Symbolic::Math.cos(x)
-  x.value = 0
-  cos.value # => 1.0
-
-You can get a list of variables from symbolic expression:
-
-  (x+y+1).variables # => [x, y]
-
-So you can get a list of variables without value:
-
-  (x+y+1).variables.select {|var| var.value.nil? }
-
-You can get an information about number of different operations used in a symbolic expression:
-
-  f = (2*x-y+2)*x-2**(x*y)
-  f.operations # => {"+"=>1, "-"=>2, "*"=>3, "/"=>0, "**"=>1, "-@"=>0}
-
-== Author
+== Original author
 
 brainopia (ravwar at gmail.com).
 

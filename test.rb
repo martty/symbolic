@@ -6,16 +6,21 @@ require File.dirname(__FILE__) + '/lib/symbolic.rb'
 x = var :name => 'x'
 
 p Symbolic::Backends.get_backends
-Symbolic::Backends.use_backend('Dummy')
-begin
-	Symbolic::Backends::Capabilities.definite_integral('a','b', 'c')
-rescue
-	
-end
+f = 2*x + 5
 
 Symbolic::Backends.use_backend('Maxima')
-Symbolic::Backends::Capabilities.definite_integral('a','b', 'c')
+nt = var :name => 'T'
+k = var :name => 'k'
+w = var :name => 'w'
+t = var :name => 't'
 
-
-#f = 2*x
-#f.definite_integral('a', 'b', 'v')
+p f.indefinite_integral('x')
+#ab = 10*Symbolic::Math.sin(k*w*t)
+#p ab
+#p ab.definite_integral('t', 0, 'T/2')
+#ub = nt/2 * ab.definite_integral('t', 0, 'T/2')
+#p ub
+#p f.indefinite_integral('x')
+#p f.definite_integral('x','a', 'b')
+p g = f.laplace('x')
+p g.inverse_laplace('s', 'x')
