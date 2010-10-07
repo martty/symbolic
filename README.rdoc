@@ -7,23 +7,22 @@ Symbolic math for ruby with backend support to do the heavy-lifting.
 Symbolic tutorial at http://brainopia.github.com/symbolic/
 
 == Backend use
+	# you can obtain the available backends by calling
+	Symbolic::Backends.get_backends
 
-# you can obtain the available backends by calling
-Symbolic::Backends.get_backends
+	# choose a backend
+	Symbolic::Backends.use_backend('Maxima')
+	# you can switch backends any time
 
-# choose a backend
-Symbolic::Backends.use_backend('Maxima')
-# you can switch backends any time
+Now you can perform advanced operations provided by the chosen backend
 
-# now you can perform advanced operations provided by the chosen backend
+	# sample function
+	x = var :name => 'x'
+	f = 2*x + 5
 
-# sample function
-x = var :name => 'x'
-f = 2*x + 5
-
-F = f.indefinite_integral('x') #indefinite_integral is provided by the maxima backend
-p F
-#=> Symbolic(x**2+5*x)
+	F = f.indefinite_integral('x') #indefinite_integral is provided by the maxima backend
+	p F
+		#=> Symbolic(x**2+5*x)
 
 == Creating your own backend
 
@@ -34,10 +33,10 @@ p F
 - add any function which can be called on the expressions, the first argument is the expression itself
 
 == Maxima backend
+	Supported functions:
 
-Supported functions:
--indefinite_integral, definite_integral
--laplace, inverse_laplace
+- indefinite_integral, definite_integral
+- laplace, inverse_laplace
 
 == Original author
 
