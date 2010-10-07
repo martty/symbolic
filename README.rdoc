@@ -7,6 +7,7 @@ Symbolic math for ruby with backend support to do the heavy-lifting.
 Symbolic tutorial at http://brainopia.github.com/symbolic/
 
 == Backend use
+Setup your application as for symbolic
 	# you can obtain the available backends by calling
 	Symbolic::Backends.get_backends
 
@@ -21,8 +22,7 @@ Now you can perform advanced operations provided by the chosen backend
 	f = 2*x + 5
 
 	F = f.indefinite_integral('x') #indefinite_integral is provided by the maxima backend
-	p F
-		#=> Symbolic(x**2+5*x)
+	p F 	#=> Symbolic(x**2+5*x)
 
 == Creating your own backend
 
@@ -33,7 +33,7 @@ Now you can perform advanced operations provided by the chosen backend
 - add any function which can be called on the expressions, the first argument is the expression itself
 
 == Maxima backend
-	Supported functions:
+Supported functions:
 
 - indefinite_integral, definite_integral
 - laplace, inverse_laplace
