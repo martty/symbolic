@@ -72,7 +72,11 @@ module Symbolic
       end
       # Sums
       def sum(s)
-	"Sum(#{s.term}, #{s.index} = #{s.lb}..#{s.ub})"
+				"Sum(#{s.term}, #{s.index} = #{s.lb}..#{s.ub})"
+      end
+      # Equation
+      def equation(e)
+      	"#{e.rhs}=#{e.lhs}"
       end
     end
   end

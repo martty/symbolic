@@ -2,12 +2,12 @@ class Symbolic::Backends
 	@@current_backend = nil
 	
 	def self.get_backends
-		self.constants.reject{|x| x == :Capabilities || x == :Backend }
+		self.constants.reject{|x| x == 'Capabilities' || x == 'Backend' }
 	end
 	
 	def self.use_backend(backend_name)
 		#p "using "+backend_name.to_sym
-		if self.get_backends.include?backend_name.to_sym
+		if self.get_backends.include?backend_name
 			if @@current_backend  # if there was a previous backend
 				release
 			end

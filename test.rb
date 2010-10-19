@@ -14,7 +14,8 @@ k = var :name => 'k'
 w = var :name => 'w'
 t = var :name => 't'
 
-p f.indefinite_integral('x')
+#p f.indefinite_integral('x')
+
 #ab = 10*Symbolic::Math.sin(k*w*t)
 #p ab
 #p ab.definite_integral('t', 0, 'T/2')
@@ -22,5 +23,11 @@ p f.indefinite_integral('x')
 #p ub
 #p f.indefinite_integral('x')
 #p f.definite_integral('x','a', 'b')
-p g = f.laplace('x')
-p g.inverse_laplace('s', 'x')
+#p g = f.laplace('x')
+#p g.inverse_laplace('s', 'x')
+e1 = f.equals(x+4)
+p e1
+p e1.to_zero
+p e1.to_s
+p e1 == e1.to_zero
+#p e1.for_var(x)

@@ -27,6 +27,8 @@ module Symbolic::Math
   Asinh = Symbolic::Function.new('asinh',1 / (1 + Arg) ** Rational(1,2))
   Atanh = Symbolic::Function.new('atanh',1/ (1 - Arg**2))
   
+  Diff = Symbolic::Function.new('diff')
+  
   @@functions = Hash.new
   
   def self.functions

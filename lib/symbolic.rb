@@ -34,6 +34,10 @@ module Symbolic
   def to_s
     Printer.print(self)
   end
+  
+  def equals(expr)
+  	Equation.new(self, expr)
+  end
 
   def inspect
     "Symbolic(#{to_s})"
@@ -54,7 +58,7 @@ end
 ['symbolic/expression.rb', 'symbolic/backend.rb', 'symbolic/coerced.rb','symbolic/constants.rb','symbolic/factors.rb',
 'symbolic/printer.rb','symbolic/sum.rb','symbolic/variable.rb','symbolic/constant.rb',
 'symbolic/function.rb','symbolic/misc.rb','symbolic/statistics.rb','symbolic/parser.rb',
-'symbolic/summands.rb', 
+'symbolic/summands.rb', 'symbolic/equation.rb',
 'symbolic/extensions/kernel.rb','symbolic/extensions/matrix.rb','symbolic/extensions/module.rb',
 'symbolic/extensions/numeric.rb','symbolic/extensions/rational.rb','symbolic/math.rb'].each do |file|
   require File.dirname(__FILE__) + '/' + file
